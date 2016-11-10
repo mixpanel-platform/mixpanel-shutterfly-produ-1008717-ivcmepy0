@@ -8,43 +8,40 @@
   </head>
   <body class="mixpanel-platform-body">
     <div class="mixpanel-platform-section">
-      <div id="eventSelect" style="float: left;"></div>
-      <div id="by" class="mixpanel-platform-label" style="margin-left: 10px; display: none;">by</div>
-      <div id="propSelect" style="float: left;"></div>
-      <div id="dateSelect" style="float: right;"></div>
-      <div style="clear: both;"></div>
-      <div id="graph"></div>
+      <div id="table"></div>
     </div>
-    <div id="table"></div>
     <script>
-      var eventSelect = $('#eventSelect').MPEventSelect();
-      var propSelect  = $('#propSelect').MPPropertySelect();
-      var dateSelect  = $('#dateSelect').MPDatepicker();
-      var eventGraph  = $('#graph').MPChart({chartType: 'line'});
-      var eventTable  = $('#table').MPTable({
-        showPercentages: true,
-        firstColHeader: 'Event'
-      });
-
       var runQuery = function() {
-        var eventName = eventSelect.MPEventSelect('value'),
-            propName  = propSelect.MPPropertySelect('value'),
-            dateRange = dateSelect.MPDatepicker('value');
-
-        if (eventName) {
-          MP.api.segment(eventName, propName, dateRange).done(function(results) {
-            eventGraph.MPChart('setData', results);
-            eventTable.MPTable('setData', results);
-          });
+        
+        var projects = [1008717, 990609, 456315, 397699, 300675, 444073, 249798, 300677, 300681, 217772, 143992];
+        var secrets = ['70b1d6e6dbfc992b6555eb248e6e29ee','a7c4bb34ce842437bbeddb71a46246db','396d9738f094940638e597a9f7d3850b','c3cb4415fdec127e59a1348e3ca9a45d','a2c7f190bc39b55d227acb2c795fcd1c','58358213fa3179ec35d923b0d5329474','c318759eda048c690243756c39fdbf3d','7a318eaedb78033e2060264f61be2ce6','6c305497860dd754a267bf7a162deaf6','423d101d6c03734d3fae3e8ac952c6f9','ce58a8dff0d96fdeb814735792e3792c'];
+        var names = ['Shutterfly Production', 'SFG Test (new)','TinyPrints iPad Production','Share Sites App Production','TinyPrints iPad Dev','ThisLife iOS Internal','ThisLife Android Internal','ThisLife Android Production','Shutterfly iPad- Production','ThisLife iOS Production','Shutterfly iPhone/Android Production'];
+        var tallies = {};
+        var script = $('#jql-events').html();
+        
+        for(i=0; i<projects.length; i++) {
+          MP.api.setCredentials(secrets[i]);
+          MP.api.jql(script, {}).done(function(results) {
+            console.log(results);
+          })
         }
+        
+        eventTable.MPTable('setData', results);
       };
-      eventSelect.on('change', function(e, eventName) {
-        propSelect.MPPropertySelect('setEvent', eventName);
-        $("#by").show();
-        runQuery();
-      });
-      propSelect.on('change', runQuery);
-      dateSelect.on('change', runQuery);
+      
+      runQuery();
+    </script>
+    
+    <script id="jql-events">
+      function main() {
+        return Events({
+          from_date: new Date(date.getFullYear(), date.getMonth(), 1),
+          to_date:   new Date()
+        })
+        .groupBy(["name", function(e) { 
+          return e.sampling_factor.toFixed(2)
+        }], mixpanel.reducer.count());
+      }
     </script>
   </body>
 </html>
