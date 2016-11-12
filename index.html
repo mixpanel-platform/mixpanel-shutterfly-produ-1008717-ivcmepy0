@@ -10,6 +10,18 @@
     <div class="mixpanel-platform-section">
       <div id="table"></div>
     </div>
+    <script id="jql-events">
+      function main() {
+        return Events({
+          from_date: new Date(date.getFullYear(), date.getMonth(), 1),
+          to_date:   new Date()
+        })
+        .groupBy(["name", function(e) { 
+          return e.sampling_factor.toFixed(2)
+        }], mixpanel.reducer.count());
+      }
+    </script>
+    
     <script>
       var runQuery = function() {
         
@@ -32,16 +44,6 @@
       runQuery();
     </script>
     
-    <script id="jql-events">
-      function main() {
-        return Events({
-          from_date: new Date(date.getFullYear(), date.getMonth(), 1),
-          to_date:   new Date()
-        })
-        .groupBy(["name", function(e) { 
-          return e.sampling_factor.toFixed(2)
-        }], mixpanel.reducer.count());
-      }
-    </script>
+    
   </body>
 </html>
