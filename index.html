@@ -16,9 +16,7 @@
           from_date: params.from,
           to_date:   params.to
         })
-        .groupBy(["name", function(e) { 
-          return e.sampling_factor.toFixed(2)
-        }], mixpanel.reducer.count());
+        .reduce(mixpanel.reducer.count());
       }
     </script>
     
