@@ -79,7 +79,7 @@
             tableData['Total']['Event Count'] += tableData[tableKeys[i]]['Event Count'];
             tableData['Total']['People Count'] += tableData[tableKeys[i]]['People Count'];
           }
-          tableData['Utilization'] = { 'Event Count': (tableData['Total']['Event Count'] / eventsPlan).toFixed(2) + '%', 'People Count': (tableData['Total']['People Count'] / peoplePlan).toFixed(2) + '%' };
+          tableData['Utilization'] = { 'Event Count': (tableData['Total']['Event Count'] / eventsPlan * 100).toFixed(2) + '%', 'People Count': (tableData['Total']['People Count'] / peoplePlan * 100).toFixed(2) + '%' };
           eventTable.MPTable('setData', tableData);
         });
 
