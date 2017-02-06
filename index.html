@@ -68,8 +68,8 @@
           var tableKeys = Object.keys(tableData);
           tableData['Tltal'] = { 'Event Count': 0, 'People Count': 0};
           for(i=0; i<tableKeys.length; i++) {
-            tableData['Total']['Event Count'] += tableData[tableKeys[i]]['Event Count'];
-            tableData['Total']['People Count'] += tableData[tableKeys[i]]['People Count'];
+            tableData['ALL']['Event Count'] += tableData[tableKeys[i]]['Event Count'];
+            tableData['ALL']['People Count'] += tableData[tableKeys[i]]['People Count'];
           }
           eventTable.MPTable('setData', tableData);
         });
